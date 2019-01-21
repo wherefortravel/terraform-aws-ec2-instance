@@ -11,7 +11,7 @@ These types of resources are supported:
 ```hcl
 module "ec2_cluster" {
   source                 = "github.com/wherefortravel/terraform-aws-ec2-instance"
-  version                = "1.13.0"
+  version                = "1.15.0"
 
   name                   = "my-cluster"
   instance_count         = 5
@@ -21,7 +21,7 @@ module "ec2_cluster" {
   key_name               = "user1"
   monitoring             = true
   vpc_security_group_ids = ["sg-12345678"]
-  subnet_id              = "subnet-eddcdzz4"
+  subnet_id              = ["subnet-eddcdzz4"]
 
   tags = {
     Terraform = "true"
@@ -112,7 +112,7 @@ data "aws_ami" "ubuntu-xenial" {
 | private_ip | Private IP address to associate with the instance in a VPC | string | `` | no |
 | root_block_device | Customize details about the root block device of the instance. See Block Devices below for details | string | `<list>` | no |
 | source_dest_check | Controls if traffic is routed to the instance when the destination address does not match the instance. Used for NAT or VPNs. | string | `true` | no |
-| subnet_id | String or list of VPC Subnet IDs to launch in | string/list | - | yes |
+| subnet_ids | List of VPC Subnet IDs to launch in | list | - | yes |
 | tags | A mapping of tags to assign to the resource | string | `<map>` | no |
 | tenancy | The tenancy of the instance (if the instance is running in a VPC). Available values: default, dedicated, host. | string | `default` | no |
 | user_data | The user data to provide when launching the instance | string | `` | no |
