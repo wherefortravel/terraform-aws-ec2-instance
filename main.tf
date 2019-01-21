@@ -11,7 +11,7 @@ resource "aws_instance" "this" {
   ami                    = "${var.ami}"
   instance_type          = "${var.instance_type}"
   user_data              = "${var.user_data}"
-  subnet_id              = "${var.subnet_id}"
+  subnet_id              = "${element(flatten(list(var.subnet_id)), count.index)}"
   key_name               = "${var.key_name}"
   monitoring             = "${var.monitoring}"
   vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
@@ -34,7 +34,7 @@ resource "aws_instance" "this" {
   placement_group                      = "${var.placement_group}"
   tenancy                              = "${var.tenancy}"
 
-  tags = "${merge(var.tags, map("Name", var.instance_count > 1 ? format("%s-%d", var.name, count.index+1) : var.name))}"
+  tags = "${merge(var.tags, map("Name", format("%s-%03d", var.name, count.index)))}"
 
   lifecycle {
     # Due to several known issues in Terraform AWS provider related to arguments of aws_instance:
@@ -50,7 +50,7 @@ resource "aws_instance" "this_t2" {
   ami                    = "${var.ami}"
   instance_type          = "${var.instance_type}"
   user_data              = "${var.user_data}"
-  subnet_id              = "${var.subnet_id}"
+  subnet_id              = "${element(flatten(list(var.subnet_id)), count.index)}"
   key_name               = "${var.key_name}"
   monitoring             = "${var.monitoring}"
   vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
@@ -77,7 +77,7 @@ resource "aws_instance" "this_t2" {
     cpu_credits = "${var.cpu_credits}"
   }
 
-  tags = "${merge(var.tags, map("Name", var.instance_count > 1 ? format("%s-%d", var.name, count.index+1) : var.name))}"
+  tags = "${merge(var.tags, map("Name", format("%s-%03d", var.name, count.index)))}"
 
   lifecycle {
     # Due to several known issues in Terraform AWS provider related to arguments of aws_instance:
